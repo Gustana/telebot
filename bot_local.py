@@ -22,64 +22,66 @@ bot = telebot.TeleBot(TOKEN)
 
 
 # -------------------- CHECKPOINT 1 --------------------
-@bot.message_handler(commands=['start', 'help'])
-def send_welcome(message):
-    # TO DO: chat_id, full_name, message_text
-    chat_id = ___
+# @bot.message_handler(commands=['start', 'help'])
+# def send_welcome(message):
+#     # TO DO: chat_id, full_name, message_text
+#     chat_id = message.chat.id
 
-    first_name = ___
-    last_name = ___
-    full_name = f'{first_name} {last_name}' if last_name is not None else first_name
+#     first_name = message.from_user.first_name
+#     last_name = message.from_user.last_name
+#     full_name = f'{first_name} {last_name}' if last_name is not None else first_name
     
-    # TO DO: subtitute text with variable
-    with open('template_text/welcome.txt', mode='r', encoding='utf-8') as f:
-        content = f.read()
-        temp = Template(content)
-        welcome = temp.substitute(___ = ___)
+#     # TO DO: subtitute text with variable
+#     with open('template_text/welcome.txt', mode='r', encoding='utf-8') as f:
+#         content = f.read()
+#         temp = Template(content)
+#         welcome = temp.substitute(FULL_NAME = full_name)
 
-    bot.send_message(
-        chat_id,
-        welcome,
-        parse_mode='Markdown'
-    )
+#     bot.send_message(
+#         chat_id,
+#         welcome,
+#         parse_mode='Markdown'
+#     )
 
-@bot.message_handler(commands=['about'])
-def send_about(message):
-    # TO DO: chat_id
-    chat_id = ___
+# @bot.message_handler(commands=['about'])
+# def send_about(message):
+#     # TO DO: chat_id
+#     chat_id = message.chat.id
 
-    # TO DO: subtitute text with static values
-    with open('template_text/about.txt', mode='r', encoding='utf-8') as f:
-        content = f.read()
-        temp = Template(content)
-        about = temp.substitute(
-            ___ = ___,
-            ___ = ___,
-            ___ = ___
-        )
+#     # TO DO: subtitute text with static values
+#     with open('template_text/about.txt', mode='r', encoding='utf-8') as f:
+#         content = f.read()
+#         temp = Template(content)
+#         about = temp.substitute(
+#             STUDENT_NAME = 'gustana',
+#             BATCH_ACADEMY = 'vulcan',
+#             GITHUB_REPO_LINK = 'https://github.com/Gustana/telebot'
+#         )
 
-    bot.send_message(
-        chat_id,
-        about,
-        parse_mode='Markdown'
-    )
+#     bot.send_message(
+#         chat_id,
+#         about,
+#         parse_mode='Markdown'
+#     )
 
 
 # # -------------------- CHECKPOINT 2 --------------------
 # # TO DO: read data and convert data type
-# df = pd.read_csv(___, parse_dates=___)
+# df = pd.read_csv('data_input/facebook_ads_v2.csv', parse_dates=['reporting_date'])
 
 # # TO DO: get unique values of campaign_id
-# df['campaign_id'] = df['campaign_id'].astype(___)
-# unique_campaign = ___
+# df['campaign_id'] = df['campaign_id'].astype('str')
+# unique_campaign = df['campaign_id'].unique()
 
 # # TO DO: change the data type of ad_id, age, and gender
-# ___
+# df['ad_id'] = df['ad_id'].astype('object')
+# df['age'] = df['age'].astype('category')
+# df['gender'] = df['gender'].astype('category')
 
 # @bot.message_handler(commands=['summary'])
 # def ask_id_summary(message):
 #     # TO DO: chat_id (SAME AS CHECKPOINT 1)
-#     chat_id = ___
+#     chat_id = message.chat.id
 
 #     markup = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=True)
 #     for i in unique_campaign:
@@ -90,32 +92,32 @@ def send_about(message):
 
 # def send_summary(message):
 #     # TO DO: chat_id (SAME AS CHECKPOINT 1)
-#     chat_id = ___
+#     chat_id = message.chat.id
 #     selected_campaign_id = message.text
 
 #     if selected_campaign_id in unique_campaign:
 #         # TO DO: find the range date
-#         df_campaign = ___
+#         df_campaign = df[df['campaign_id']==selected_campaign_id]
         
-#         start_date = df_campaign['reporting_date'].min().strftime(format=___)
-#         end_date = df_campaign['reporting_date'].max().strftime(format=___)
+#         start_date = df_campaign['reporting_date'].min().strftime(format='%d %b %Y')
+#         end_date = df_campaign['reporting_date'].max().strftime(format='%d %b %Y')
         
 #         # TO DO: perform calculation
-#         total_spent = ___
-#         total_conversion = ___
-#         cpc = ___
+#         total_spent = df_campaign['spent'].sum().astype('int')
+#         total_conversion = df_campaign['total_conversion'].sum().astype('int')
+#         cpc = round(total_spent/total_conversion, 1)
 
 #         # TO DO: subtitute text with variables
 #         with open('template_text/summary.txt', mode='r', encoding='utf-8') as f:
 #             content = f.read()
 #             temp = Template(content)
 #             summary = temp.substitute(
-#                 CAMPAIGN_ID = ___,
-#                 START_DATE = ___,
-#                 END_DATE = ___,
-#                 TOTAL_SPENT = ___,
-#                 TOTAL_CONVERSION = ___,
-#                 CPC = ___
+#                 CAMPAIGN_ID = selected_campaign_id,
+#                 START_DATE = start_date,
+#                 END_DATE = end_date,
+#                 TOTAL_SPENT = f"${total_spent:,}",
+#                 TOTAL_CONVERSION = f"${total_conversion:,}",
+#                 CPC = f"${cpc:,.1f}"
 #             )
 
 #         bot.send_message(chat_id, summary)
@@ -125,10 +127,14 @@ def send_about(message):
 
 
 # # -------------------- CHECKPOINT 3 --------------------
+# df = pd.read_csv('data_input/facebook_ads_v2.csv')
+# df['campaign_id'] = df['campaign_id'].astype('str')
+# unique_campaign = df['campaign_id'].unique()
+
 # @bot.message_handler(commands=['plot'])
 # def ask_id_plot(message):
 #     # TO DO: chat_id (SAME AS CHECKPOINT 1)
-#     chat_id = ___
+#     chat_id = message.chat.id
 
 #     markup = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=True)
 #     for i in unique_campaign:
@@ -139,14 +145,14 @@ def send_about(message):
 
 # def send_plot(message):
 #     # TO DO: chat_id (SAME AS CHECKPOINT 1)
-#     chat_id = ___
+#     chat_id = message.chat.id
 #     selected_campaign_id = message.text
 
 #     if selected_campaign_id in unique_campaign:
 #         # TO DO: prepare data for visualization
-#         df_campaign = ___
-#         df_plot = ___
-#         df_plot['cpc'] = ___
+#         df_campaign = df[df['campaign_id']==selected_campaign_id]
+#         df_plot = df_campaign.groupby('age').sum(numeric_only=True)[['spent', 'approved_conversion']]
+#         df_plot['cpc'] = df_plot['spent']/df_plot['approved_conversion']
         
 #         # TO DO: visualization
 
@@ -161,19 +167,19 @@ def send_about(message):
 #             ax.spines['bottom'].set_visible(False)
 
 #         # first subplot: total spent per age group
-#         axes[0].bar(x=___, height=___, color=___)
-#         axes[0].set_ylabel(___, fontsize=8)
+#         axes[0].bar(x=df_plot.reset_index()['age'], height=df_plot['spent'], color='#ae2024')
+#         axes[0].set_ylabel('Total Spent', fontsize=8)
 
 #         # second subplot: total approved conversion per age group
-#         axes[1].bar(x=___, height=___, color=___)
-#         axes[1].set_ylabel(___, fontsize=8)
+#         axes[1].bar(x=df_plot.reset_index()['age'], height=df_plot['approved_conversion'], color='#000000')
+#         axes[1].set_ylabel('Total Approved Conversion', fontsize=8)
 
 #         # third subplot: average CPC per age group
-#         axes[2].bar(x=___, height=___, color=___)
-#         axes[2].set_ylabel(___, fontsize=8)
+#         axes[2].bar(x=df_plot.reset_index()['age'], height=df_plot['cpc'], color='#ae2024')
+#         axes[2].set_ylabel('Average CPC', fontsize=8)
 
 #         # set the label and title for plots
-#         plt.xlabel(___)
+#         plt.xlabel('Age Group')
 #         axes[0].set_title(
 #             f'''Average CPC, Total Spent, and Total Approved Conversion
 #             across Age Group for Campaign ID: {selected_campaign_id}''')
@@ -191,37 +197,45 @@ def send_about(message):
 #             bot.send_photo(chat_id, img)
 
 #         # (EXTRA CHALLENGE) Voice Message
-#         # plot_info = list(zip(
-#         #     [___, ___, ___],
-#         #     ___,
-#         #     ___))
+#         plot_info = list(zip(
+#             ['total_spent', 'approved_conversion', 'cpc'],
+#             ['45-49', '30-34', '45-49'],
+#             ['35-39', '35-39', '30-34']))
 
-#         # plot_text = f'This is your requested plot for Campaign ID {selected_campaign_id}.\n'
-#         # for col, maxi, mini in plot_info:
-#         #     text = f"Age group with the highest {col} is {maxi}, while the lowest is {mini}.\n"
-#         #     plot_text += text
+#         plot_text = f'This is your requested plot for Campaign ID {selected_campaign_id}.\n'
+#         for col, maxi, mini in plot_info:
+#             text = f"Age group with the highest {col} is {maxi}, while the lowest is {mini}.\n"
+#             plot_text += text
 
-#         # # save voice message
-#         # speech = gTTS(text = plot_text)
-#         # speech.save('output/plot_info.ogg')
+#         # save voice message
+#         speech = gTTS(text = plot_text)
+#         speech.save('output/plot_info.mp3')
 
-#         # # send voice message
-#         # with open('output/plot_info.ogg', 'rb') as f:
-#         #     bot.send_voice(chat_id, f)
+#         # send voice message
+#         with open('output/plot_info.mp3', 'rb') as f:
+#             bot.send_voice(chat_id, f)
 #     else:
 #         bot.send_message(chat_id, 'Campaign ID not found. Please try again!')
 #         ask_id_plot(message)
 
 
-# # -------------------- CHECKPOINT 4 --------------------
-# @bot.message_handler(func=lambda message: True)
-# def echo_all(message):
-#     # TO DO: emoji
-#     with open('template_text/default.txt', mode='r', encoding='utf-8') as f:
-#         temp = Template(f.read())
-#         default = temp.substitute(___ = ___)
-        
-#     bot.reply_to(message, default)
+# -------------------- CHECKPOINT 4 --------------------
+@bot.message_handler(commands=['start', 'help', 'about', 'summary', 'plot'])
+def send_welcome(message):
+    first_name = message.from_user.first_name
+    last_name = message.from_user.last_name
+    full_name = f'{first_name} {last_name}' if last_name is not None else first_name
+
+    bot.reply_to(message, f'Hi {full_name}, I hope you\'re doing fine' )
+
+@bot.message_handler(func=lambda message: True)
+def echo_all(message):
+    # TO DO: emoji
+    with open('template_text/default.txt', mode='r', encoding='utf-8') as f:
+        temp = Template(f.read())
+        default = temp.substitute(EMOJI = emoji.emojize(':confused_face:'))
+    
+    bot.reply_to(message, default)
 
 if __name__ == "__main__":
     bot.polling()
