@@ -18,7 +18,6 @@ matplotlib.use('Agg')
 # SETUP: TELEGRAM BOT API TOKEN
 load_dotenv()
 TOKEN = os.environ['TOKEN'] # token for main chatbot
-TOKEN = "5849830436:AAGLiUJJgamus4cf6icIjSuGd1M3WBam5Zs" # token for the development chatbot
 bot = telebot.TeleBot(TOKEN)
 
 
