@@ -214,7 +214,7 @@ def send_plot(message):
         ).sort_values(by='cpc', ascending=False)
 
         plot_info = list(zip(
-            ['total_spent', 'approved_conversion', 'cpc'],
+            ['total spent', 'approved conversion', 'cpc'],
             [
                 highest_spent.head(1).index[0], highest_approved_conversion.head(1).index[0], 
                 highest_cpc.head(1).index[0]
